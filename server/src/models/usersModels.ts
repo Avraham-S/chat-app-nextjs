@@ -65,4 +65,17 @@ const generateToken = (user: any) => {
   return token;
 };
 
-module.exports = { addUser, validateUser, generateToken };
+const getUserById = async (id: number) => {
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        id,
+      },
+    });
+    return { user };
+  } catch (err) {
+    return { err };
+  }
+};
+
+module.exports = { addUser, validateUser, generateToken, getUserById };

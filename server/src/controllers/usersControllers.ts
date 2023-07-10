@@ -41,4 +41,25 @@ const login = async (req: any, res: any) => {
   }
 };
 
-module.exports = { signup, login };
+const auth = async (req: any, res: any) => {
+  try {
+    const { id } = req.user;
+    const response = await userModels.getUserById(id);
+    if (response.err) {
+      throw new Error(response.err);
+    }
+    const { user } = response;
+    const reponseData = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+    res.send(reponseData);
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).send({ error: err.message });
+  }
+};
+module.exports = { signup, login, auth };
