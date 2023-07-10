@@ -17,3 +17,11 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Message {
+  id: string;
+  content: string;
+  from: string | undefined;
+  to: string;
+  dateTime: number;
+}

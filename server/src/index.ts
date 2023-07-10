@@ -1,3 +1,4 @@
+import { Socket } from "socket.io";
 import { addUsernameToSocket } from "./middlewares/socketMiddleware";
 
 const express = require("express");
@@ -33,8 +34,17 @@ const io = new Server(server, {});
 
 io.use(addUsernameToSocket);
 
-io.on("connection", (socket: any) => {
-  console.log(`a user: ${socket.handshake.auth.username},connected`);
+const connectedUsers: any = {};
+
+io.on("connection", (socket: Socket) => {
+  console.log(`a user: ${socket.handshake.auth.username} ,connected`);
+  connectedUsers[socket.handshake.auth.username] = socket.id;
+
+  socket.on("private-message", (message: any) => {
+    console.log("message:", message);
+    console.log("connectedUsers:", connectedUsers);
+    socket.to(connectedUsers[message.to]).emit("private-message", message);
+  });
 });
 
 server.listen(PORT, () => {

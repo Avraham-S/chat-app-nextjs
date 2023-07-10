@@ -19,11 +19,17 @@ export const SocketContextProvider = ({ children }: any) => {
     transports: ["websocket"],
     withCredentials: true,
     autoConnect: false,
-    reconnection: false,
+    reconnection: true,
     auth: {
       username: user?.username,
     },
   });
+
+  React.useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+  }, []);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
