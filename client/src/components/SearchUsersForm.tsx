@@ -23,7 +23,7 @@ export const SearchUsersForm = ({ focusRef }: { focusRef: Ref<any> }) => {
   const [searching, setSearching] = React.useState<boolean>(false);
   const [user, _, updateUser] = useUser();
 
-  const debouncedFetchUsers = debounce(fetchUsers, 300);
+  const debouncedFetchUsers = debounce(fetchUsers, 500);
 
   useEffect(() => {
     setResults([]);
@@ -57,8 +57,9 @@ export const SearchUsersForm = ({ focusRef }: { focusRef: Ref<any> }) => {
           <Spinner />
         ) : results?.length ? (
           results?.map((result) => {
+            console.log("result", result, "\n", user?.id === result.id);
             return (
-              user?.id === result.id && (
+              user?.id !== result.id && (
                 <UserListItem
                   user={user}
                   result={result}

@@ -11,7 +11,7 @@ export interface LoginFormInfo {
 }
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
   username: string;
   contactsIds: string[];
