@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
 import { addUsernameToSocket } from "./middlewares/socketMiddleware";
+import { newChat } from "./models/chatModels";
 
 const express = require("express");
 const http = require("http");
@@ -10,6 +11,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const usersRouter = require("./routes/userRoutes");
+const contactRouter = require("./routes/contactRoutes");
+const chatRouter = require("./routes/chatRoutes");
 
 const PORT = process.env.PORT || 5001;
 
@@ -29,6 +32,8 @@ app.use(cors(corsOptions));
 
 // routes
 app.use("/users", usersRouter);
+app.use("/contacts", contactRouter);
+app.use("/chats", chatRouter);
 
 const io = new Server(server, {});
 
@@ -39,6 +44,8 @@ const connectedUsers: any = {};
 io.on("connection", (socket: Socket) => {
   console.log(`a user: ${socket.handshake.auth.username} ,connected`);
   connectedUsers[socket.handshake.auth.username] = socket.id;
+
+  socket.on("new-private-chat", newChat);
 
   socket.on("private-message", (message: any) => {
     console.log("message:", message);

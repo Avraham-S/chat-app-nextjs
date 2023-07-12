@@ -3,11 +3,21 @@ import { useUser } from "../contexts/UserContext";
 import { Message } from "../types/types";
 import React, { useEffect } from "react";
 
-export const ChatView = ({ messages }: { messages: Message[] }) => {
+export const ChatView = ({ messages }: { messages: Message[] | undefined }) => {
   const [user] = useUser();
+  console.log(messages);
+  useEffect(() => {
+    console.log("messages changed:", messages);
+  }, [messages]);
+
   return (
-    <VStack justifyContent="center" alignItems="center" width={"100%"}>
-      {messages.map((msg) => {
+    <VStack
+      justifyContent="center"
+      alignItems="center"
+      width={"100%"}
+      flexGrow={1}
+    >
+      {messages?.map((msg) => {
         return (
           <Box
             display={"flex"}
@@ -16,6 +26,7 @@ export const ChatView = ({ messages }: { messages: Message[] }) => {
             }`}
             width={"100%"}
             key={msg.id}
+            padding={4}
           >
             <SlideFade in={true}>
               <Box
@@ -24,6 +35,8 @@ export const ChatView = ({ messages }: { messages: Message[] }) => {
                 borderRadius={`0.3rem 0.3rem ${
                   user?.username === msg.from ? "0 0.3rem" : "0.3rem 0"
                 }`}
+                textColor={"black"}
+                boxShadow={"sm"}
               >
                 {msg.content}
               </Box>
