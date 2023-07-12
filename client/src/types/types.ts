@@ -14,6 +14,7 @@ export interface User {
   id: number;
   email: string;
   username: string;
+  contactsIds: string[];
   createdAt: string;
   updatedAt: string;
 }

@@ -5,10 +5,6 @@ import React, { useEffect } from "react";
 
 export const ChatView = ({ messages }: { messages: Message[] | undefined }) => {
   const [user] = useUser();
-  console.log(messages);
-  useEffect(() => {
-    console.log("messages changed:", messages);
-  }, [messages]);
 
   return (
     <VStack
