@@ -7,11 +7,12 @@ const userModels: {
   addContact: (
     arg0: any,
     arg1: any
-  ) => Promise<{ contactIds?: any; error?: any }>;
+  ) => Promise<{ contactsIds?: any; error?: any }>;
   removeContact: (
     arg0: any,
     arg1: any
-  ) => Promise<{ contactIds?: any; error?: any }>;
+  ) => Promise<{ contactsIds?: any; error?: any }>;
+  getUsersByUsername: (arg0: any) => Promise<{ users?: any; error?: any }>;
 } = require("../models/usersModels");
 
 const signup = async (req: any, res: any): Promise<void> => {
@@ -22,6 +23,7 @@ const signup = async (req: any, res: any): Promise<void> => {
       id: user.id,
       username: user.username,
       email: user.email,
+      contactsIds: user.contactsIds,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -52,6 +54,7 @@ const login = async (req: any, res: any) => {
       id: user.id,
       username: user.username,
       email: user.email,
+      contactsIds: user.contactsIds,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -67,11 +70,13 @@ const auth = async (req: any, res: any) => {
   try {
     const { id } = req.user;
     const { user, error } = await userModels.getUserById(id);
+    console.log("user in controller", user);
     if (error) throw new Error(error);
     const reponseData = {
       id: user.id,
       username: user.username,
       email: user.email,
+      contactsIds: user.contactsIds,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -84,15 +89,21 @@ const auth = async (req: any, res: any) => {
 
 const getContacts = async (req: any, res: any) => {
   try {
-    const { users, error } = await userModels.getUsersById(req.user.contactIds);
+    console.log("req.user", req.user);
+    const { id } = req.user;
+    const { user } = await userModels.getUserById(id);
+    const { users, error } = await userModels.getUsersById(user.contactsIds);
+
+    console.log("users", users);
     if (error) throw new Error(error);
     const reponseData = users.map((contact: any) => ({
       id: contact.id,
       username: contact.username,
     }));
-
+    console.log("reponseData", reponseData);
     res.send(reponseData);
   } catch (error: any) {
+    console.error(error.message);
     res.status(500).send({ error: error.message });
   }
 };
@@ -101,9 +112,9 @@ const addContact = async (req: any, res: any) => {
   try {
     const { id } = req.user;
     const { contactId } = req.body;
-    const { contactIds, error } = await userModels.addContact(id, contactId);
+    const { contactsIds, error } = await userModels.addContact(id, contactId);
     if (error) throw new Error(error);
-    res.send({ message: "Contact added", contactIds });
+    res.send({ message: "Contact added", contactsIds });
   } catch (err: any) {
     res.status(500).send({ message: err.message });
   }
@@ -113,9 +124,30 @@ const removeContact = async (req: any, res: any) => {
   try {
     const { id } = req.user;
     const { contactId } = req.body;
-    const { contactIds, error } = await userModels.removeContact(id, contactId);
+    console.log("body:", req.body);
+    const { contactsIds, error } = await userModels.removeContact(
+      id,
+      contactId
+    );
     if (error) throw new Error(error);
-    res.send({ message: "Contact removed", contactIds });
+    res.send({ message: "Contact removed", contactsIds });
+  } catch (err: any) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+const searchUsers = async (req: any, res: any) => {
+  try {
+    const { query } = req.query;
+    console.log("query", query);
+    console.log("req.params", req.params);
+    const { users, error } = await userModels.getUsersByUsername(query);
+    if (error) throw new Error(error);
+    const reponseData = users.map((user: any) => ({
+      id: user.id,
+      username: user.username,
+    }));
+    res.send(reponseData);
   } catch (err: any) {
     res.status(500).send({ message: err.message });
   }
@@ -128,4 +160,5 @@ module.exports = {
   getContacts,
   addContact,
   removeContact,
+  searchUsers,
 };

@@ -5,8 +5,10 @@ import { SideBar } from "../components/SideBar";
 import { HStack, VStack, Spinner, Box } from "@chakra-ui/react";
 import { useUser } from "../contexts/UserContext";
 import { g_chat } from "../types/types";
+import { getChats, getContacts } from "../lib/api";
 import axios from "axios";
 import { API_BASE_URL } from "../lib/globals";
+import { get } from "http";
 
 const MockChats: g_chat[] = [];
 
@@ -16,6 +18,7 @@ export const HomePage = () => {
     socket.connected
   );
   const [chats, setChats] = React.useState<g_chat[]>(MockChats);
+
   const [activeChat, setActiveChat] = React.useState<g_chat | null>(chats[0]);
 
   const [user] = useUser();
@@ -35,16 +38,10 @@ export const HomePage = () => {
   }, [socket.connected]);
 
   React.useEffect(() => {
+    console.log("user has changes");
     if (user) {
-      axios
-        .get(API_BASE_URL + "/chats", { withCredentials: true })
-        .then((res) => {
-          console.log(res.data);
-          setChats(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log("user:", user);
+      getChats(setChats);
     }
   }, [user]);
 
@@ -57,19 +54,6 @@ export const HomePage = () => {
     >
       <h1>Home Page</h1>
       <h2>{activeChat?.chatName}</h2>
-      <button
-        onClick={() => {
-          socket.emit("new-private-chat", {
-            name: "New Chat",
-            users: [
-              "5a92d56c-9fb4-4b5f-8a00-c5ea50be5312",
-              "10946be5-4148-44ec-b008-a9efa6d7f2a9",
-            ],
-          });
-        }}
-      >
-        New Chat
-      </button>
       <Box style={{ height: "100%", display: "flex", width: "100%" }}>
         <Box width={"30%"}>
           <SideBar

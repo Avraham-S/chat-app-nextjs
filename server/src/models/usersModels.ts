@@ -66,7 +66,7 @@ const generateToken = (user: any) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      contactIds: user.contactIds,
+      contactsIds: user.contactsIds,
     },
     process.env.JWT_SECRET
   );
@@ -108,28 +108,50 @@ const getUsersById = async (
   }
 };
 
-const addContact = async (
-  userId: string,
-  contactId: string
-): Promise<{ contactIds?: string[]; error?: any }> => {
+const getUsersByUsername = async (
+  username: string
+): Promise<{ users?: any[]; error?: any }> => {
   try {
-    const { user, error } = await getUserById(userId);
-    if (error) throw new Error(error);
-
-    if (user?.contactsIds.includes(contactId))
-      throw new Error("Contact already exists");
-
-    const updatedUser = await prisma.user.update({
+    if (!username) throw new Error("No username provided");
+    console.log("username", username);
+    const users = await prisma.user.findMany({
       where: {
-        id: userId,
-      },
-      data: {
-        contactsIds: {
-          push: contactId,
+        username: {
+          contains: username,
         },
       },
     });
-    return { contactIds: updatedUser.contactsIds };
+    console.log("users", users);
+    return { users };
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
+};
+
+const addContact = async (
+  userId: string,
+  contactId: string
+): Promise<{ contactsIds?: string[]; error?: any }> => {
+  try {
+    const { user, error } = await getUserById(userId);
+    if (error) throw new Error(error);
+    let updatedUser: any;
+
+    if (!user?.contactsIds.includes(contactId)) {
+      updatedUser = await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          contactsIds: {
+            push: contactId,
+          },
+        },
+      });
+    }
+    console.log("updatedUser", updatedUser);
+    return { contactsIds: updatedUser.contactsIds };
   } catch (error: any) {
     console.error(error);
     return { error };
@@ -139,23 +161,25 @@ const addContact = async (
 const removeContact = async (
   userId: string,
   contactId: string
-): Promise<{ contactIds?: string[]; error?: any }> => {
+): Promise<{ contactsIds?: string[]; error?: any }> => {
   try {
     const { user, error } = await getUserById(userId);
-    if (!user?.contactsIds.includes(contactId))
-      throw new Error("Contact does not exist");
+    if (error) throw new Error(error);
 
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        contactsIds: {
-          set: user.contactsIds.filter((id: string) => id !== contactId),
+    let updatedUser: any;
+    if (user?.contactsIds.includes(contactId)) {
+      updatedUser = await prisma.user.update({
+        where: {
+          id: userId,
         },
-      },
-    });
-    return { contactIds: updatedUser.contactsIds };
+        data: {
+          contactsIds: {
+            set: user.contactsIds.filter((id: string) => id !== contactId),
+          },
+        },
+      });
+    }
+    return { contactsIds: updatedUser.contactsIds };
   } catch (error: any) {
     console.error(error);
     return { error };
@@ -170,6 +194,7 @@ module.exports = {
   getUsersById,
   addContact,
   removeContact,
+  getUsersByUsername,
 };
 export {
   addUser,
