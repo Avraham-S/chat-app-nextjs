@@ -8,6 +8,7 @@ import {
   VStack,
   TabPanel,
   Tabs,
+  Text,
   Button,
   Modal,
   ModalOverlay,
@@ -22,6 +23,9 @@ import { SearchUsersForm } from "./SearchUsersForm";
 import { UserListItem } from "./UserListItem";
 import { useUser } from "../contexts/UserContext";
 import { getContacts } from "../lib/api";
+import { EditIcon } from "@chakra-ui/icons";
+import { on } from "events";
+import { NewChatForm } from "./NewChatForm";
 
 export const SideBar = ({
   activeChat,
@@ -52,25 +56,17 @@ export const SideBar = ({
   }, [contacts]);
   return (
     <>
-      {/* <Button onClick={onOpen} width={"100%"}>
-        Find People
-      </Button>
       <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={focusRef}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Search Users</ModalHeader>
           <ModalCloseButton />
+          <ModalHeader>New Chat</ModalHeader>
           <ModalBody>
-            <SearchUsersForm focusRef={focusRef} />
+            <NewChatForm contacts={contacts} />
           </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
-      </Modal> */}
+      </Modal>
       <Tabs>
         <TabList>
           <Tab>Chats</Tab>
@@ -80,6 +76,19 @@ export const SideBar = ({
         <TabPanels>
           <TabPanel>
             <VStack height="100%" flexGrow="1" spacing={0}>
+              <Box
+                width={"100%"}
+                display={"flex"}
+                justifyContent={"space-between"}
+                cursor={"pointer"}
+                _hover={{ bg: "gray.100" }}
+                padding={2}
+                transition={"0.3s"}
+                borderRadius={4}
+                onClick={onOpen}
+              >
+                <Text>New Chat</Text> <EditIcon />
+              </Box>
               {chats.length ? (
                 chats.map((chat) => (
                   <Box

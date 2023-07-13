@@ -27,6 +27,11 @@ export interface Message {
   dateTime: number;
 }
 
+export interface Contact {
+  id: string;
+  username: string;
+}
+
 export class g_chat {
   public chatName?: string;
   constructor(
