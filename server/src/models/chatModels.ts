@@ -14,10 +14,10 @@ const newChat = async (data: { name: string; users: string[] }) => {
     });
     console.log("chat", chat);
 
-    return chat;
+    return { chat };
   } catch (error) {
     console.error(error);
-    return error;
+    return { error };
   }
 };
 

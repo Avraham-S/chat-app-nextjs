@@ -151,7 +151,7 @@ const addContact = async (
       });
     }
     console.log("updatedUser", updatedUser);
-    return { contactsIds: updatedUser.contactsIds };
+    return { contactsIds: updatedUser?.contactsIds };
   } catch (error: any) {
     console.error(error);
     return { error };

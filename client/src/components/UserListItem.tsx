@@ -33,16 +33,15 @@ export const UserListItem = ({
       borderRadius={4}
       width={"95%"}
       backgroundColor={"gray.100"}
-      onClick={() => {
-        console.log(user?.contactsIds);
-      }}
       _hover={{
         backgroundColor: "gray.200",
         cursor: "pointer",
         transition: "all 0.2s ease-in-out",
       }}
     >
-      <Text textAlign={"center"}>{result.username}</Text>
+      <Text textAlign={"center"} color={"black"}>
+        {result.username}
+      </Text>
       {isContact ? (
         <IconButton
           size="xs"
@@ -65,7 +64,7 @@ export const UserListItem = ({
           icon={<AddIcon />}
           onClick={async () => {
             // user?.contactsIds.concat(result.id);
-            await addContact(result.id).then;
+            await addContact(result.id);
             await updateUser();
 
             setIsContact(!!user?.contactsIds.includes(result.id));

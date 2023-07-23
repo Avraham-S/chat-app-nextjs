@@ -69,3 +69,14 @@ export const getContacts = async (
     console.error(error);
   }
 };
+export const newChat = async (name: string, users: string[]): Promise<void> => {
+  try {
+    const { data } = await axios.post(
+      API_BASE_URL + "/chats/new-chat",
+      { name, users },
+      { withCredentials: true }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};

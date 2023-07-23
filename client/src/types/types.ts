@@ -11,7 +11,7 @@ export interface LoginFormInfo {
 }
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
   username: string;
   contactsIds: string[];
@@ -25,6 +25,11 @@ export interface Message {
   from: string | undefined;
   to: string;
   dateTime: number;
+}
+
+export interface Contact {
+  id: string;
+  username: string;
 }
 
 export class g_chat {
