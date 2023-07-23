@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { Contact } from "../types/types";
-import { checkTargetForNewValues } from "framer-motion";
 import { newChat } from "../lib/api";
 
 export const NewChatForm = ({ contacts }: { contacts: Contact[] }) => {

@@ -1,11 +1,4 @@
-import {
-  Button,
-  FormControl,
-  VStack,
-  Input,
-  HStack,
-  Box,
-} from "@chakra-ui/react";
+import { VStack, Box } from "@chakra-ui/react";
 import React from "react";
 import { Message, g_chat } from "../types/types";
 import { useUser } from "../contexts/UserContext";

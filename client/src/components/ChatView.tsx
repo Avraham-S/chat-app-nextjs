@@ -1,7 +1,6 @@
-import { Box, Fade, ScaleFade, VStack, SlideFade } from "@chakra-ui/react";
+import { Box, VStack, SlideFade } from "@chakra-ui/react";
 import { useUser } from "../contexts/UserContext";
 import { Message } from "../types/types";
-import React, { useEffect } from "react";
 
 export const ChatView = ({ messages }: { messages: Message[] | undefined }) => {
   const [user] = useUser();

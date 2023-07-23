@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, VStack, Spinner, Box, IconButton } from "@chakra-ui/react";
-import { AddIcon, MinusIcon, SearchIcon } from "@chakra-ui/icons";
+import { Text, Box, IconButton } from "@chakra-ui/react";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { User } from "../types/types";
 import { addContact, removeContact } from "../lib/api";
 

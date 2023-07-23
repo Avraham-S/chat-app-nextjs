@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useUser } from "../contexts/UserContext";
 import { LoginFormInfo } from "../types/types";
-import { validateEmail, validatePassword } from "../lib/helpers";
+import { validateEmail } from "../lib/helpers";
 
 export const LoginForm = () => {
   const [formInfo, setFormInfo] = React.useState<LoginFormInfo>({

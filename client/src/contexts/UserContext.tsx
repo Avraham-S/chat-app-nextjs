@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useAuth } from "./LoggedInContext";
+import React from "react";
 import { User } from "../types/types";
 import axios from "axios";
 import { API_BASE_URL } from "../lib/globals";

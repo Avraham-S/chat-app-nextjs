@@ -2,13 +2,10 @@ import React from "react";
 import { useSocket } from "../contexts/SocketContext";
 import { ChatWindow } from "../components/ChatWindow";
 import { SideBar } from "../components/SideBar";
-import { HStack, VStack, Spinner, Box } from "@chakra-ui/react";
+import { VStack, Spinner, Box } from "@chakra-ui/react";
 import { useUser } from "../contexts/UserContext";
 import { g_chat } from "../types/types";
-import { getChats, getContacts } from "../lib/api";
-import axios from "axios";
-import { API_BASE_URL } from "../lib/globals";
-import { get } from "http";
+import { getChats } from "../lib/api";
 
 const MockChats: g_chat[] = [];
 

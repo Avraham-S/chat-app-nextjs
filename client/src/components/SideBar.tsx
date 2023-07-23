@@ -24,7 +24,6 @@ import { UserListItem } from "./UserListItem";
 import { useUser } from "../contexts/UserContext";
 import { getContacts } from "../lib/api";
 import { EditIcon } from "@chakra-ui/icons";
-import { on } from "events";
 import { NewChatForm } from "./NewChatForm";
 
 export const SideBar = ({

@@ -1,21 +1,10 @@
-import React, { MouseEventHandler, Ref, useEffect } from "react";
-import {
-  Input,
-  InputGroup,
-  InputRightAddon,
-  IconButton,
-  Box,
-  Text,
-  VStack,
-  Spinner,
-} from "@chakra-ui/react";
-import { AddIcon, MinusIcon, SearchIcon } from "@chakra-ui/icons";
-import axios, { Axios } from "axios";
+import React, { Ref, useEffect } from "react";
+import { Input, Text, VStack, Spinner } from "@chakra-ui/react";
+
 import { useUser } from "../contexts/UserContext";
-import { API_BASE_URL } from "../lib/globals";
 import { debounce } from "../lib/helpers";
 import { UserListItem } from "./UserListItem";
-import { fetchUsers, removeContact, addContact } from "../lib/api";
+import { fetchUsers } from "../lib/api";
 
 export const SearchUsersForm = ({ focusRef }: { focusRef: Ref<any> }) => {
   const [results, setResults] = React.useState<any[]>();

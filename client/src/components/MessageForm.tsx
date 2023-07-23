@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, FormControl, HStack, Input } from "@chakra-ui/react";
 
 export const MessageForm = ({
