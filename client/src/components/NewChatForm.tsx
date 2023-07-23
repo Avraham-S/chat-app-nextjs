@@ -14,6 +14,7 @@ import {
 import React, { useEffect } from "react";
 import { Contact } from "../types/types";
 import { checkTargetForNewValues } from "framer-motion";
+import { newChat } from "../lib/api";
 
 export const NewChatForm = ({ contacts }: { contacts: Contact[] }) => {
   const [addedUsers, setAddedUsers] = React.useState<Contact[]>([]);
@@ -153,7 +154,14 @@ export const NewChatForm = ({ contacts }: { contacts: Contact[] }) => {
             justifyContent={"flex-end"}
             mt={"1rem"}
           >
-            <Button size={"sm"} isDisabled={!chatName || !addedUsers.length}>
+            <Button
+              size={"sm"}
+              isDisabled={!chatName || !addedUsers.length}
+              onClick={(e) => {
+                const ids = chatInfo.users.map((user: Contact) => user.id);
+                newChat(chatInfo.name, ids);
+              }}
+            >
               Create Chat
             </Button>
           </Box>
